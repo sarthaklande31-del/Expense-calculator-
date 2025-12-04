@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Expense Tracker — Sarthak</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;padding:0 16px;color:#111}
+    h1{margin:0 0 12px}
+    .card{background:#f8f9fb;padding:14px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:12px}
+    label{display:block;font-size:13px;margin:8px 0 6px}
+    input,select,button{padding:8px 10px;border-radius:8px;border:1px solid #d6d6d6;font-size:14px}
+    button{cursor:pointer;background:#0b74ff;color:#fff;border:none}
+    .row{display:flex;gap:8px;align-items:center}
+    .row > *{flex:1}
+    ul{list-style:none;padding:0;margin:12px 0}
+    li{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;background:#fff;margin-bottom:8px;border:1px solid #eee}
+    .meta{font-size:13px;color:#555}
+    .totals{display:flex;gap:12px;margin-top:8px}
+    .totals .card{flex:1}
+    .muted{color:#666;font-size:13px}
+    .small{font-size:12px;color:#777}
+  </style>
+</head>
+<body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Expense Tracker — Sarthak</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;padding:0 16px;color:#111}
+    h1{margin:0 0 12px}
+    .card{background:#f8f9fb;padding:14px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:12px}
+    label{display:block;font-size:13px;margin:8px 0 6px}
+    input,select,button{padding:8px 10px;border-radius:8px;border:1px solid #d6d6d6;font-size:14px}
+    button{cursor:pointer;background:#0b74ff;color:#fff;border:none}
+    .row{display:flex;gap:8px;align-items:center}
+    .row > *{flex:1}
+    ul{list-style:none;padding:0;margin:12px 0}
+    li{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;background:#fff;margin-bottom:8px;border:1px solid #eee}
+    .meta{font-size:13px;color:#555}
+    .totals{display:flex;gap:12px;margin-top:8px}
+    .totals .card{flex:1}
+    .muted{color:#666;font-size:13px}
+    .small{font-size:12px;color:#777}
+  </style>
+</head>
+<body>
+  <h1>Expense Tracker — Sarthak 1.0</h1>
+
+  <div class="card">
+    <div class="row">
+      <input id="amount" type="number" placeholder="Amount (₹)" />
+      <select id="category">
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Study">Study</option>
+        <option value="Other">Other</option>
+      </select>
+      <button id="addBtn">Add</button>
+    </div>
+    <div class="small muted" style="margin-top:8px">Data stored in your browser (localStorage). No server, privacy preserved.</div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="meta">Total Expenses</div>
+      <div id="total" style="font-size:20px;font-weight:600">₹0.00</div>
+    </div>
+    <div class="card">
+      <div class="meta">Entries</div>
+      <div id="count" style="font-size:20px;font-weight:600">0</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>History</strong> <span class="small muted"> (latest first)</span></div>
+      <div>
+        <button id="clearBtn" style="background:#ff4d4f">Clear</button>
+      </div>
+    </div>
+    <ul id="list"></ul>
+    <div class="muted small">Tip: Use the Clear button to remove all items.</div>
+  </div>
+
+  <script>
+    // storage key
+    const KEY = 'sarthak_expenses_v1';
+
+    // DOM
+    const amountEl = document.getElementById('amount');
+    const categoryEl = document.getElementById('category');
+    const addBtn = document.getElementById('addBtn');
+    const listEl = document.getElementById('list');
+    const totalEl = document.getElementById('total');
+    const countEl = document.getElementById('count');
+    const clearBtn = document.getElementById('clearBtn');
+
+    // load
+    let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+    // render
+    function render(){
+      listEl.innerHTML = '';
+      let sum = 0;
+      items.slice().reverse().forEach((it, idx) => {
+        sum += Number(it.amount);
+        const li = document.createElement('li');
+        li.innerHTML = `<div>
+                        <div style="font-weight:600">₹${Number(it.amount).toFixed(2)}</div>
+                        <div class="meta">${it.category} · <span class="small">${new Date(it.time).toLocaleString()}</span></div>
+                      </div>
+                      <div class="small">
+                        <button data-i="${items.length-1-idx}" class="del">Delete</button>
+                      </div>`;
+        listEl.appendChild(li);
+      });
+      totalEl.textContent = '₹' + sum.toFixed(2);
+      countEl.textContent = items.length;
+      attachDelete();
+      localStorage.setItem(KEY, JSON.stringify(items));
+    }
+
+    function attachDelete(){
+      document.querySelectorAll('.del').forEach(btn=>{
+        btn.onclick = e => {
+          const i = Number(btn.dataset.i);
+          items.splice(i,1);
+          render();
+        };
+      });
+    }
+
+    addBtn.onclick = () => {
+      const amount = parseFloat(amountEl.value);
+      const category = categoryEl.value;
+      if (!amount || amount <= 0) {
+        alert('Enter a positive amount');
+        amountEl.focus();
+        return;
+      }
+      items.push({amount: amount.toFixed(2), category, time: Date.now()});
+      amountEl.value = '';
+      render();
+    };
+
+    clearBtn.onclick = () => {
+      if(confirm('Clear all expenses?')) {
+        items = [];
+        render();
+      }
+    };
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
+￼Enter  <h1>Expense Tracker — Sarthak 1.0</h1>
+
+  <div class="card">
+    <div class="row">
+      <input id="amount" type="number" placeholder="Amount (₹)" />
+      <select id="category">
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Study">Study</option>
+        <option value="Other">Other</option>
+      </select>
+      <button id="addBtn">Add</button>
+    </div>
+    <div class="small muted" style="margin-top:8px">Data stored in your browser (localStorage). No server, privacy preserved.</div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="meta">Total Expenses</div>
+      <div id="total" style="font-size:20px;font-weight:600">₹0.00</div>
+    </div>
+    <div class="card">
+      <div class="meta">Entries</div>
+      <div id="count" style="font-size:20px;font-weight:600">0</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>History</strong> <span class="small muted"> (latest first)</span></div>
+      <div>
+        <button id="clearBtn" style="background:#ff4d4f">Clear</button>
+      </div>
+    </div>
+    <ul id="list"></ul>
+    <div class="muted small">Tip: Use the Clear button to remove all items.</div>
+  </div>
+ript>
+    // storage key
+    const KEY = 'sarthak_expenses_v1';
+
+    // DOM
+    const amountEl = document.getElementById('amount');
+    const categoryEl = document.getElementById('category');
+    const addBtn = document.getElementById('addBtn');
+    const listEl = document.getElementById('list');
+    const totalEl = document.getElementById('total');
+    const countEl = document.getElementById('count');
+    const clearBtn = document.getElementById('clearBtn');
+
+    // load
+    let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+    // render
+    function render(){
+      listEl.innerHTML = '';
+      let sum = 0;
+      items.slice().reverse().forEach((it, idx) => {
+        sum += Number(it.amount);
+        const li = document.createElement('li');
+        li.innerHTML = `<div>
+                        <div style="font-weight:600">₹${Number(it.amount).toFixed(2)}</div>
+                        <div class="meta">${it.category} · <span class="small">${new Date(it.time).toLocaleString()}</span></div>
+                      </div>
+                      <div class="small">
+                        <button data-i="${items.length-1-idx}" class="del">Delete</button>
+                      </div>`;
+        listEl.appendChild(li);
+      });
+      totalEl.textContent = '₹' + sum.toFixed(2);
+      countEl.textContent = items.length;
+      attachDelete();
+      localStorage.setItem(KEY, JSON.stringify(items));
