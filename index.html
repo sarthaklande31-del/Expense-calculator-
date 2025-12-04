@@ -1,234 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Expense Tracker — Sarthak</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;padding:0 16px;color:#111}
-    h1{margin:0 0 12px}
-    .card{background:#f8f9fb;padding:14px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:12px}
-    label{display:block;font-size:13px;margin:8px 0 6px}
-    input,select,button{padding:8px 10px;border-radius:8px;border:1px solid #d6d6d6;font-size:14px}
-    button{cursor:pointer;background:#0b74ff;color:#fff;border:none}
-    .row{display:flex;gap:8px;align-items:center}
-    .row > *{flex:1}
-    ul{list-style:none;padding:0;margin:12px 0}
-    li{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;background:#fff;margin-bottom:8px;border:1px solid #eee}
-    .meta{font-size:13px;color:#555}
-    .totals{display:flex;gap:12px;margin-top:8px}
-    .totals .card{flex:1}
-    .muted{color:#666;font-size:13px}
-    .small{font-size:12px;color:#777}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarthak 1.0 | Expense Tracker</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #e2e8f0;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .balance-title { font-size: 14px; opacity: 0.9; }
+        .balance-amount { font-size: 36px; font-weight: bold; margin: 5px 0; }
+
+        /* Input Section */
+        .input-group {
+            background: var(--card);
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select {
+            background: #334155;
+            border: 1px solid #475569;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button#addBtn {
+            background: var(--success);
+            color: black;
+            font-weight: bold;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        /* List */
+        ul { list-style: none; padding: 0; margin-top: 24px; }
+
+        li {
+            background: var(--card);
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent);
+            animation: slideIn 0.3s ease;
+        }
+
+        .item-info div:first-child { font-weight: 600; font-size: 16px; }
+        .item-info .date { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+        
+        .delete-btn {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .delete-btn:hover { background: #ef4444; color: white; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .empty-state { text-align: center; color: #64748b; margin-top: 40px; }
+    </style>
 </head>
 <body>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Expense Tracker — Sarthak</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;padding:0 16px;color:#111}
-    h1{margin:0 0 12px}
-    .card{background:#f8f9fb;padding:14px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:12px}
-    label{display:block;font-size:13px;margin:8px 0 6px}
-    input,select,button{padding:8px 10px;border-radius:8px;border:1px solid #d6d6d6;font-size:14px}
-    button{cursor:pointer;background:#0b74ff;color:#fff;border:none}
-    .row{display:flex;gap:8px;align-items:center}
-    .row > *{flex:1}
-    ul{list-style:none;padding:0;margin:12px 0}
-    li{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;background:#fff;margin-bottom:8px;border:1px solid #eee}
-    .meta{font-size:13px;color:#555}
-    .totals{display:flex;gap:12px;margin-top:8px}
-    .totals .card{flex:1}
-    .muted{color:#666;font-size:13px}
-    .small{font-size:12px;color:#777}
-  </style>
-</head>
-<body>
-  <h1>Expense Tracker — Sarthak 1.0</h1>
 
-  <div class="card">
-    <div class="row">
-      <input id="amount" type="number" placeholder="Amount (₹)" />
-      <select id="category">
-        <option value="Food">Food</option>
-        <option value="Transport">Transport</option>
-        <option value="Study">Study</option>
-        <option value="Other">Other</option>
-      </select>
-      <button id="addBtn">Add</button>
+<div class="container">
+    <h1>Sarthak 1.0 Tracker</h1>
+
+    <div class="balance-card">
+        <div class="balance-title">TOTAL SPENT</div>
+        <div class="balance-amount" id="totalAmount">₹0.00</div>
+        <div style="font-size: 12px; opacity: 0.8">Experiments & Costs</div>
     </div>
-    <div class="small muted" style="margin-top:8px">Data stored in your browser (localStorage). No server, privacy preserved.</div>
-  </div>
 
-  <div class="row">
-    <div class="card">
-      <div class="meta">Total Expenses</div>
-      <div id="total" style="font-size:20px;font-weight:600">₹0.00</div>
+    <div class="input-group">
+        <input type="text" id="desc" placeholder="What did you buy?" />
+        <input type="number" id="amount" placeholder="₹ Amount" />
+        <select id="category">
+            <option value="🍕 Food">🍕 Food</option>
+            <option value="🚕 Travel">🚕 Travel</option>
+            <option value="💻 Tech">💻 Tech</option>
+            <option value="📚 Study">📚 Study</option>
+        </select>
+        <button id="addBtn">Add +</button>
     </div>
-    <div class="card">
-      <div class="meta">Entries</div>
-      <div id="count" style="font-size:20px;font-weight:600">0</div>
-    </div>
-  </div>
 
-  <div class="card" style="margin-top:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><strong>History</strong> <span class="small muted"> (latest first)</span></div>
-      <div>
-        <button id="clearBtn" style="background:#ff4d4f">Clear</button>
-      </div>
-    </div>
-    <ul id="list"></ul>
-    <div class="muted small">Tip: Use the Clear button to remove all items.</div>
-  </div>
+    <ul id="list">
+        </ul>
+    <div id="emptyMsg" class="empty-state">No expenses yet. Start building! 🚀</div>
+</div>
 
-  <script>
-    // storage key
-    const KEY = 'sarthak_expenses_v1';
+<script>
+    const STORAGE_KEY = 'sarthak_expenses_v2';
+    
+    // DOM Elements
+    const list = document.getElementById('list');
+    const totalEl = document.getElementById('totalAmount');
+    const descInput = document.getElementById('desc');
+    const amountInput = document.getElementById('amount');
+    const categoryInput = document.getElementById('category');
+    const emptyMsg = document.getElementById('emptyMsg');
 
-    // DOM
-    const amountEl = document.getElementById('amount');
-    const categoryEl = document.getElementById('category');
-    const addBtn = document.getElementById('addBtn');
-    const listEl = document.getElementById('list');
-    const totalEl = document.getElementById('total');
-    const countEl = document.getElementById('count');
-    const clearBtn = document.getElementById('clearBtn');
+    // Load Data
+    let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-    // load
-    let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+    // Functions
+    function updateUI() {
+        list.innerHTML = '';
+        let total = 0;
 
-    // render
-    function render(){
-      listEl.innerHTML = '';
-      let sum = 0;
-      items.slice().reverse().forEach((it, idx) => {
-        sum += Number(it.amount);
-        const li = document.createElement('li');
-        li.innerHTML = `<div>
-                        <div style="font-weight:600">₹${Number(it.amount).toFixed(2)}</div>
-                        <div class="meta">${it.category} · <span class="small">${new Date(it.time).toLocaleString()}</span></div>
-                      </div>
-                      <div class="small">
-                        <button data-i="${items.length-1-idx}" class="del">Delete</button>
-                      </div>`;
-        listEl.appendChild(li);
-      });
-      totalEl.textContent = '₹' + sum.toFixed(2);
-      countEl.textContent = items.length;
-      attachDelete();
-      localStorage.setItem(KEY, JSON.stringify(items));
+        if (transactions.length === 0) {
+            emptyMsg.style.display = 'block';
+        } else {
+            emptyMsg.style.display = 'none';
+        }
+
+        transactions.forEach(transaction => {
+            total += parseFloat(transaction.amount);
+            
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="item-info">
+                    <div>${transaction.desc} <span style="font-size:14px; opacity:0.7">(${transaction.category})</span></div>
+                    <div class="date">${new Date(transaction.id).toLocaleDateString()}</div>
+                </div>
+                <div style="text-align:right">
+                    <div style="font-weight:bold; margin-bottom:4px">₹${parseFloat(transaction.amount).toFixed(2)}</div>
+                    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">Delete</button>
+                </div>
+            `;
+            list.appendChild(li); // Newest at bottom, or use prepend for top
+        });
+
+        totalEl.innerText = `₹${total.toFixed(2)}`;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
     }
 
-    function attachDelete(){
-      document.querySelectorAll('.del').forEach(btn=>{
-        btn.onclick = e => {
-          const i = Number(btn.dataset.i);
-          items.splice(i,1);
-          render();
+    function addTransaction() {
+        if(descInput.value.trim() === '' || amountInput.value.trim() === '') {
+            alert('Please enter details!');
+            return;
+        }
+
+        const transaction = {
+            id: Date.now(), // Unique ID based on time
+            desc: descInput.value,
+            amount: amountInput.value,
+            category: categoryInput.value
         };
-      });
+
+        transactions.push(transaction);
+        updateUI();
+
+        descInput.value = '';
+        amountInput.value = '';
     }
 
-    addBtn.onclick = () => {
-      const amount = parseFloat(amountEl.value);
-      const category = categoryEl.value;
-      if (!amount || amount <= 0) {
-        alert('Enter a positive amount');
-        amountEl.focus();
-        return;
-      }
-      items.push({amount: amount.toFixed(2), category, time: Date.now()});
-      amountEl.value = '';
-      render();
-    };
+    function removeTransaction(id) {
+        transactions = transactions.filter(t => t.id !== id);
+        updateUI();
+    }
 
-    clearBtn.onclick = () => {
-      if(confirm('Clear all expenses?')) {
-        items = [];
-        render();
-      }
-    };
+    // Event Listeners
+    document.getElementById('addBtn').addEventListener('click', addTransaction);
 
-    // initial render
-    render();
-  </script>
+    // Initial Load
+    updateUI();
+</script>
+
 </body>
 </html>
-￼Enter  <h1>Expense Tracker — Sarthak 1.0</h1>
-
-  <div class="card">
-    <div class="row">
-      <input id="amount" type="number" placeholder="Amount (₹)" />
-      <select id="category">
-        <option value="Food">Food</option>
-        <option value="Transport">Transport</option>
-        <option value="Study">Study</option>
-        <option value="Other">Other</option>
-      </select>
-      <button id="addBtn">Add</button>
-    </div>
-    <div class="small muted" style="margin-top:8px">Data stored in your browser (localStorage). No server, privacy preserved.</div>
-  </div>
-
-  <div class="row">
-    <div class="card">
-      <div class="meta">Total Expenses</div>
-      <div id="total" style="font-size:20px;font-weight:600">₹0.00</div>
-    </div>
-    <div class="card">
-      <div class="meta">Entries</div>
-      <div id="count" style="font-size:20px;font-weight:600">0</div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><strong>History</strong> <span class="small muted"> (latest first)</span></div>
-      <div>
-        <button id="clearBtn" style="background:#ff4d4f">Clear</button>
-      </div>
-    </div>
-    <ul id="list"></ul>
-    <div class="muted small">Tip: Use the Clear button to remove all items.</div>
-  </div>
-ript>
-    // storage key
-    const KEY = 'sarthak_expenses_v1';
-
-    // DOM
-    const amountEl = document.getElementById('amount');
-    const categoryEl = document.getElementById('category');
-    const addBtn = document.getElementById('addBtn');
-    const listEl = document.getElementById('list');
-    const totalEl = document.getElementById('total');
-    const countEl = document.getElementById('count');
-    const clearBtn = document.getElementById('clearBtn');
-
-    // load
-    let items = JSON.parse(localStorage.getItem(KEY) || '[]');
-
-    // render
-    function render(){
-      listEl.innerHTML = '';
-      let sum = 0;
-      items.slice().reverse().forEach((it, idx) => {
-        sum += Number(it.amount);
-        const li = document.createElement('li');
-        li.innerHTML = `<div>
-                        <div style="font-weight:600">₹${Number(it.amount).toFixed(2)}</div>
-                        <div class="meta">${it.category} · <span class="small">${new Date(it.time).toLocaleString()}</span></div>
-                      </div>
-                      <div class="small">
-                        <button data-i="${items.length-1-idx}" class="del">Delete</button>
-                      </div>`;
-        listEl.appendChild(li);
-      });
-      totalEl.textContent = '₹' + sum.toFixed(2);
-      countEl.textContent = items.length;
-      attachDelete();
-      localStorage.setItem(KEY, JSON.stringify(items));
